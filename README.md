@@ -24,7 +24,7 @@ Este projeto busca **proteger comunidades vulneráveis** e **apoiar a preservaç
 Este projeto depende de dois repositórios auxiliares para a coleta e o pré-processamento dos dados:
 
 ### 1. Extração de Dados Hidrológicos (API ANA HidroWeb)
-- **Repositório**: [API ANA Hidroweb]([https://github.com/seu-usuario/extracao-dados-hidroweb](https://github.com/GabiScof/modelo-previsao-enchentes))
+- **Repositório**: [API ANA Hidroweb](https://github.com/GabiScof/modelo-previsao-enchentes)
 - **Descrição**: Sistema de automação para extrair dados de chuva e vazão dos rios através da API da Agência Nacional de Águas (ANA HidroWeb).
 - **Autora**: Gabriela Scofield
 <br><br>
