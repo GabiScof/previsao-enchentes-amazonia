@@ -41,6 +41,14 @@ Dessa forma, garantimos que o modelo esteja baseado em dados confiáveis e repre
 ## 🚀 Status do Projeto
 - [x] Extração de dados finalizada
 - [x] Pré-processamento em andamento
+- [x] Criação de gráficos de análise de dados
 - [ ] Desenvolvimento do modelo de previsão
 - [ ] Validação e ajustes finais
 - [ ] Publicação dos resultados
+
+## Relatório 
+ 
+ Para facilitar a compreensão do projeto, foi elaborado um relatório detalhado contendo a explicação dos dados utilizados, o motivo da escolha de determinadas funções, além da apresentação de gráficos e análises que ajudam a entender o comportamento das variáveis. O documento serve como base para justificar as etapas de pré-processamento, modelagem e visualização dos resultados.
+ 
+ 📄 [Clique aqui para acessar o relatório em PDF](docs/Relatorio-Projeto-Ciencia-de-Dados.pdf)
+ 
