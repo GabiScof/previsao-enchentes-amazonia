@@ -9,7 +9,7 @@ Original file is located at
 
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split, RandomizedSearchCV
+from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 
 from sklearn.linear_model import LinearRegression, Lasso, Ridge
@@ -136,7 +136,7 @@ print(f"R²: {rf_r2:.4f}")
 plt.plot(y_test.values, label='Real')
 plt.plot(rf_pred, label='Previsto (RF)')
 plt.legend()
-plt.title("Previsão de vazão")
+plt.title(f"Random Forest\nRMSE={rf_rmse:.2f} | MAE={rf_mae:.2f} | R²={rf_r2:.3f}")
 plt.show()
 
 """* **XGBoost**"""
@@ -157,7 +157,7 @@ print(f"R²: {xgb_r2:.4f}")
 plt.plot(y_test.values, label='Real')
 plt.plot(xgb_pred, label='Previsto (XG)')
 plt.legend()
-plt.title("Previsão de vazão")
+plt.title(f" XGBoost\nRMSE={xgb_rmse:.2f} | MAE={xgb_mae:.2f} | R²={xgb_r2:.3f}")
 plt.show()
 
 """* **MLP**"""
@@ -178,7 +178,7 @@ print(f"R²: {mlp_r2:.4f}")
 plt.plot(y_test.values, label='Real')
 plt.plot(mlp_pred, label='Previsto (MLP)')
 plt.legend()
-plt.title("Previsão de vazão")
+plt.title(f"MLP Regressor\nRMSE={mlp_rmse:.2f} | MAE={mlp_mae:.2f} | R²={mlp_r2:.3f}")
 plt.show()
 
 """* **SVR**"""
@@ -199,7 +199,7 @@ print(f"R²: {svr_r2:.4f}")
 plt.plot(y_test.values, label='Real')
 plt.plot(svr_pred, label='Previsto (SVR)')
 plt.legend()
-plt.title("Previsão de vazão")
+plt.title(f"SVR (kernel RBF)\nRMSE={svr_rmse:.2f} | MAE={svr_mae:.2f} | R²={svr_r2:.3f}")
 plt.show()
 
 """# **Comparação**
@@ -250,84 +250,99 @@ results_df.reset_index(drop=True)
 
 rf = RandomForestRegressor(random_state=42)
 
-param_dist_rf = {
-    'n_estimators': randint(100, 500),
-    'max_depth': [None, 10, 20, 30, 40, 50],
-    'min_samples_split': randint(2, 10),
-    'min_samples_leaf': randint(1, 5),
-    'max_features': [0.1, 0.5, 'sqrt', 'log2']
+param_grid_rf = {
+    'n_estimators': [100, 200, 300],
+    'max_depth': [10, 20],
+    'min_samples_split': [3, 5],
+    'min_samples_leaf': [1,3],
+    'max_features': ['sqrt', 'log2']
 }
 
-#GridSearch ficava impossivelmente demorado mesmo com poucas combinações
-random_search_rf = RandomizedSearchCV(
-    rf, param_distributions=param_dist_rf,
-    n_iter=30, cv=5, scoring='neg_mean_squared_error',
-    n_jobs=-1, random_state=42
+grid_search_rf = GridSearchCV(
+    estimator=rf,
+    param_grid=param_grid_rf,
+    scoring='neg_root_mean_squared_error',
+    cv=3,
+    verbose=2,
+    n_jobs=-1
 )
 
-random_search_rf.fit(X_train, y_train)
+grid_search_rf.fit(X_train, y_train)
 
-best_rf = random_search_rf.best_estimator_
+best_rf = grid_search_rf.best_estimator_
 
 print("🌳 Random Forest - Melhores hiperparâmetros:")
-print(random_search_rf.best_params_)
+print(grid_search_rf.best_params_)
 
 """* **XGBoost**"""
 
 xgb = XGBRegressor(objective='reg:squarederror', random_state=42)
 
-param_dist_xgb = {
-    'n_estimators': randint(100, 500),
-    'max_depth': randint(3, 10),
-    'learning_rate': uniform(0.01, 0.2),
-    'subsample': uniform(0.6, 0.4),
-    'colsample_bytree': uniform(0.6, 0.4),
-    'gamma': uniform(0, 0.5)
+param_grid_xgb = {
+    'n_estimators': [100, 200, 300],
+    'max_depth': [3, 5, 7],
+    'learning_rate': [0.05, 0.1, 0.15],
+    'subsample': [0.7, 0.85, 1.0],
+    'colsample_bytree': [0.7, 0.85, 1.0],
+    'gamma': [0, 0.15, 0.3]
 }
 
-random_search_xgb = RandomizedSearchCV(
-    xgb, param_distributions=param_dist_xgb,
-    n_iter=30, cv=5, scoring='neg_mean_squared_error',
-    n_jobs=-1, random_state=42
+grid_search_xgb = GridSearchCV(
+    estimator=xgb,
+    param_grid=param_grid_xgb,
+    scoring='neg_root_mean_squared_error',
+    cv=3,
+    verbose=2,
+    n_jobs=-1
 )
 
-random_search_xgb.fit(X_train, y_train)
+grid_search_xgb.fit(X_train, y_train)
 
-best_xgb = random_search_xgb.best_estimator_
+best_xgb = grid_search_xgb.best_estimator_
 
 print("⚡ XGBoost - Melhores hiperparâmetros:")
-print(random_search_xgb.best_params_)
+print(grid_search_xgb.best_params_)
 
 """* **Nova Comparação**"""
 
 rf_pred = best_rf.predict(X_test)
 xgb_pred = best_xgb.predict(X_test)
 
-rf_rmse = np.sqrt(mean_squared_error(y_test, rf_pred))
-xgb_rmse = np.sqrt(mean_squared_error(y_test, xgb_pred))
+cv_scores = cross_val_score(best_rf, X, y, cv=5, scoring='neg_root_mean_squared_error')
+rmse_scores = -cv_scores # Convertendo para valores positivos (RMSE)
+rf_rmse = np.mean(rmse_scores)
 
-rf_mae = mean_absolute_error(y_test, rf_pred)
-xgb_mae = mean_absolute_error(y_test, xgb_pred)
+cv_scores = cross_val_score(best_rf, X, y, cv=5, scoring='neg_mean_absolute_error')
+rmse_scores = -cv_scores # Convertendo para valores positivos (MAE)
+rf_mae = np.mean(rmse_scores)
 
-rf_r2 = r2_score(y_test, rf_pred)
-xgb_r2 = r2_score(y_test, xgb_pred)
+cv_scores = cross_val_score(best_rf, X, y, cv=5, scoring='r2')
+rf_r2 = np.mean(cv_scores) # (R²)
 
-plt.figure(figsize=(14, 5))
+cv_scores = cross_val_score(best_xgb, X, y, cv=5, scoring='neg_root_mean_squared_error')
+xgb_scores = -cv_scores # Convertendo para valores positivos (RMSE)
+xgb_rmnse = np.mean(xgb_scores)
+
+cv_scores = cross_val_score(best_xgb, X, y, cv=5, scoring='neg_mean_absolute_error')
+rmse_scores = -cv_scores # Convertendo para valores positivos (MAE)
+xgb_mae = np.mean(rmse_scores)
+
+cv_scores = cross_val_score(best_xgb, X, y, cv=5, scoring='r2')
+xgb_r2 = np.mean(cv_scores) # (R²)
 
 # Random Forest
-plt.subplot(1, 2, 1)
 plt.plot(y_test.values, label='Real')
 plt.plot(rf_pred, label='Previsto (RF)')
-plt.title(f"Random Forest\nRMSE={rf_rmse:.2f} | MAE={rf_mae:.2f} | R²={rf_r2:.3f}")
+plt.title(f"Random Forest\nRMSE (Cross V.)={rf_rmse:.3f} | MAE={rf_mae:.2f} | R²={rf_r2:.3f}")
 plt.legend()
+plt.tight_layout()
+plt.show()
 
 # XGBoost
-plt.subplot(1, 2, 2)
 plt.plot(y_test.values, label='Real')
 plt.plot(xgb_pred, label='Previsto (XGB)')
-plt.title(f"XGBoost\nRMSE={xgb_rmse:.2f} | MAE={xgb_mae:.2f} | R²={xgb_r2:.3f}")
+plt.title(f"XGBoost\nRMSE (Cross V.)={xgb_rmse:.3f} | MAE={xgb_mae:.2f} | R²={xgb_r2:.3f}")
 plt.legend()
-
 plt.tight_layout()
 plt.show()
 
@@ -342,7 +357,7 @@ results_df = pd.DataFrame({
 print()
 plt.figure(figsize=(10, 6))
 sns.barplot(data=results_df, x="Modelo", y="RMSE")
-plt.title("Comparação dos Modelos Não Lineares (RMSE)")
+plt.title("Comparação  (RMSE)")
 plt.ylabel("RMSE (menor = melhor)")
 plt.xlabel("Modelo")
 plt.tight_layout()
