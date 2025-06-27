@@ -2,6 +2,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 import plotly.express as px
+import seaborn as sns
+
+# GRÁFICO DE ANÁLISE DE CROSS VALIDATION ----------------------------------------------------------------------------------------
 
 # XGBoost
 
@@ -114,3 +117,45 @@ saida = os.path.join(output_path, 'grafico_validacao_cruzada_comparacao.png')
 print("Salvando em:", os.path.abspath(saida))
 
 fig.write_image(saida, format='png', scale=3, width=1000, height=600)
+
+
+# GRÁFICOS DE ANÁLISE DE CENÁRIOS ------------------------------------------------------------------------------------------------
+
+# XGBoost
+
+plt.figure(figsize=(14, 5))
+sns.barplot(data=df_xgb, x="Cenário", y="R²", color="orange")
+
+plt.title("Desempenho (R²) por Cenário - XGBoost")
+plt.xlabel("Cenário")
+plt.ylabel("Coeficiente de Determinação (R²)")
+plt.gca().set_xticklabels([])
+plt.tight_layout()
+
+output_path = 'data/plano-de-experimentacao/analise-graficos'
+os.makedirs(output_path, exist_ok=True)
+plt.savefig(os.path.join(output_path, 'grafico_r2_por_cenario_xgb.png'), dpi=300, bbox_inches='tight')
+
+plt.show()
+plt.close() 
+
+
+
+# Random Forest
+
+plt.figure(figsize=(14, 5))
+sns.barplot(data=df_rf, x="Cenário", y="R²", color="orange")
+
+plt.title("Desempenho (R²) por Cenário - Random Forest")
+plt.xlabel("Cenário")
+plt.ylabel("Coeficiente de Determinação (R²)")
+plt.gca().set_xticklabels([])
+plt.tight_layout()
+
+output_path = 'data/plano-de-experimentacao/analise-graficos'
+os.makedirs(output_path, exist_ok=True)
+plt.savefig(os.path.join(output_path, 'grafico_r2_por_cenario_rf.png'), dpi=300, bbox_inches='tight')
+
+plt.show()
+plt.close() 
+
