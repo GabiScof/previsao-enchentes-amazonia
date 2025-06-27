@@ -38,17 +38,38 @@ Este projeto de previsão de enchentes **depende dos dados pré-processados** no
 
 Dessa forma, garantimos que o modelo esteja baseado em dados confiáveis e representativos da realidade hidrológica da Amazônia.
 <br><br>
-## 🚀 Status do Projeto
-- [x] Extração de dados finalizada
-- [x] Pré-processamento em andamento
-- [x] Criação de gráficos de análise de dados
-- [ ] Desenvolvimento do modelo de previsão
-- [ ] Validação e ajustes finais
-- [ ] Publicação dos resultados
 
 ## Relatório 
  
  Para facilitar a compreensão do projeto, foi elaborado um relatório detalhado contendo a explicação dos dados utilizados, o motivo da escolha de determinadas funções, além da apresentação de gráficos e análises que ajudam a entender o comportamento das variáveis. O documento serve como base para justificar as etapas de pré-processamento, modelagem e visualização dos resultados.
  
  📄 [Clique aqui para acessar o relatório em PDF](docs/Relatorio-Projeto-Ciencia-de-Dados.pdf)
- 
+
+<br><br>
+## Plano de Experimentação
+
+Neste projeto, desenvolvemos um plano de experimentação para comparar o desempenho de dois modelos de regressão amplamente utilizados: **Random Forest Regressor** e **XGBoost Regressor**. 
+
+O objetivo foi identificar a melhor combinação de técnicas de pré-processamento, seleção de atributos e estratégias de validação cruzada, a fim de obter o modelo mais robusto e preciso para a tarefa de previsão.
+
+Diversos cenários foram testados, variando:
+
+- Técnicas de normalização (`StandardScaler`, `MinMaxScaler`, `RobustScaler`)
+- Estratégias de validação cruzada (`KFold`, `RepeatedKFold`)
+- Métodos de seleção de atributos (`RFE`, `SelectKBest`)
+- Hiperparâmetros dos modelos (como profundidade das árvores e taxa de aprendizado)
+
+As métricas utilizadas para avaliação dos modelos foram:
+
+- **R²** (coeficiente de determinação)
+- **MSE** (Erro Quadrático Médio)
+- **MAE** (Erro Absoluto Médio)
+
+Todos os resultados foram registrados em uma planilha que contém a combinação de parâmetros testados, permitindo identificar os melhores cenários.
+
+📄 [Download do Plano de Experimentação (.xlsx)](./docs/Plano-de-Experimentação.xlsx)
+<br><br>
+
+📊 Abaixo, uma preview do Plano de Experimentação para o Random Forest Regressor:
+<br><br>
+![Plano de Experimentação](docs/Preview-Plano-Experimentação.png)
