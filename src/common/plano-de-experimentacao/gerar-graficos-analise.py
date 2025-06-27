@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
 
 df = pd.read_excel('data/plano-de-experimentacao/plano_de_experimentacao_final_2.xlsx', sheet_name='XGBoost Regressor')
 
@@ -23,6 +24,13 @@ plt.ylabel("R² Médio")
 plt.title("Desempenho Médio por Estratégia de Validação Cruzada (com Desvio Padrão)")
 plt.grid(axis='y', linestyle='--', alpha=0.7)
 plt.tight_layout()
-plt.show()
 
-plt.savefig('data/plano-de-experimentacao/analise-graficos/grafico_validacao_cruzada.png')
+output_path = 'data/plano-de-experimentacao/analise-graficos'
+os.makedirs(output_path, exist_ok=True)
+
+saida = os.path.join(output_path, 'grafico_validacao_cruzada_2.png')
+print("Salvando em:", os.path.abspath(saida)) 
+
+plt.savefig(saida, dpi=300, bbox_inches='tight') 
+
+plt.close() 
