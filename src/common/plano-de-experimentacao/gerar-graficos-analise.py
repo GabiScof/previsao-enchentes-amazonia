@@ -136,7 +136,6 @@ output_path = 'data/plano-de-experimentacao/analise-graficos'
 os.makedirs(output_path, exist_ok=True)
 plt.savefig(os.path.join(output_path, 'grafico_r2_por_cenario_xgb.png'), dpi=300, bbox_inches='tight')
 
-plt.show()
 plt.close() 
 
 
@@ -156,6 +155,5 @@ output_path = 'data/plano-de-experimentacao/analise-graficos'
 os.makedirs(output_path, exist_ok=True)
 plt.savefig(os.path.join(output_path, 'grafico_r2_por_cenario_rf.png'), dpi=300, bbox_inches='tight')
 
-plt.show()
 plt.close() 
 
