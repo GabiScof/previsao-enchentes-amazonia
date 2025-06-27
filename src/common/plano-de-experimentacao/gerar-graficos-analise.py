@@ -24,3 +24,5 @@ plt.title("Desempenho Médio por Estratégia de Validação Cruzada (com Desvio 
 plt.grid(axis='y', linestyle='--', alpha=0.7)
 plt.tight_layout()
 plt.show()
+
+plt.savefig('data/plano-de-experimentacao/analise-graficos/grafico_validacao_cruzada.png')
