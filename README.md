@@ -1,22 +1,14 @@
 # 🌍 Modelo de Previsão de Enchentes na Amazônia
----
+
 <br>
 
 ## 📈 Sobre o Projeto
 
-Este projeto tem como objetivo a **criação de um modelo de previsão de enchentes na região Amazônica**.
+Este projeto tem como objetivo a **criação de um modelo de previsão de vazão em Manaus**.
 
 As enchentes na Amazônia causam impactos severos em comunidades ribeirinhas, cidades pequenas e infraestruturas locais. Devido à dificuldade de realizar ações corretivas no momento em que as enchentes acontecem (devido às barreiras logísticas, às vastas distâncias e à falta de acesso), é crucial que medidas preventivas possam ser tomadas **com antecedência**.
 
-O modelo que estamos desenvolvendo visa fornecer uma previsão antecipada baseada em dados de chuva (pluviometria), vazão dos rios e desmatamento, permitindo:
-
-- Proteger vidas humanas e reduzir danos materiais.
-- Auxiliar na logística de evacuações e preparações emergenciais.
-- Apoiar órgãos públicos e organizações ambientais no planejamento de ações.
-<br><br>
-## 💚 Nosso compromisso
-
-Este projeto busca **proteger comunidades vulneráveis** e **apoiar a preservação ambiental** através de tecnologia e dados.
+O modelo que estamos desenvolvendo visa fornecer uma previsão antecipada baseada em dados de chuva (pluviometria), vazão dos rios e desmatamento.
 <br><br>
 
 ## 📚 GitHubs Externos Relacionados
@@ -28,25 +20,45 @@ Este projeto depende de dois repositórios auxiliares para a coleta e o pré-pro
 - **Descrição**: Sistema de automação para extrair dados de chuva e vazão dos rios através da API da Agência Nacional de Águas (ANA HidroWeb).
 - **Autora**: Gabriela Scofield
 <br><br>
-## 🔄 Conexão entre os Projetos
 
-Este projeto de previsão de enchentes **depende dos dados pré-processados** nos repositórios abaixo. Para treinar e validar o modelo de machine learning, utilizamos como insumos:
 
-- Séries históricas de chuva.
-- Séries históricas de vazão dos principais rios da região Amazônica.
-- Dados de desmatamento
+## 📂 Organização do Repositório
 
-Dessa forma, garantimos que o modelo esteja baseado em dados confiáveis e representativos da realidade hidrológica da Amazônia.
+```text
+├── data/                      # Conjunto de dados utilizados no projeto
+│   ├── dataframes/           # Arquivos CSV e manipulados para uso interno
+│   └── graficos/             # Gráficos gerados durante a análise e experimentação
+│
+├── docs/                     # Documentação e arquivos auxiliares
+│   ├── Plano-de-Experimentação.xlsx
+│   ├── Preview-Plano-Experimentação.png
+│   └── Relatorio-Projeto-Ciencia-de-Dados.pdf
+│
+├── src/                      
+│   ├── common/               # Código-fonte principal do projeto
+│   │   ├── extracao-dados/          # Scripts de coleta e leitura dos dados
+│   │   ├── plano-de-experimentacao/ # Configuração dos experimentos
+│   │   └── pre-processamento/       # Funções de limpeza e transformação dos dados
+│   ├── experiments/          # Códigos experimentais e testes não essenciais
+│   ├── helpers/              # Scripts de apoio (ex: funções auxiliares específicas)
+│   └── plots/                # Scripts de geração de gráficos e visualizações
+│
+├── main.ipynb                # Notebook principal de execução do pipeline
+├── .gitignore              
+├── .gitkeep                 
+└── README.md                
+```
 <br><br>
 
-## Relatório 
+
+## 📑 Relatório 
  
  Para facilitar a compreensão do projeto, foi elaborado um relatório detalhado contendo a explicação dos dados utilizados, o motivo da escolha de determinadas funções, além da apresentação de gráficos e análises que ajudam a entender o comportamento das variáveis. O documento serve como base para justificar as etapas de pré-processamento, modelagem e visualização dos resultados.
  
  📄 [Clique aqui para acessar o relatório em PDF](docs/Relatorio-Projeto-Ciencia-de-Dados.pdf)
 
 <br><br>
-## Plano de Experimentação
+## 📊 Plano de Experimentação
 
 Neste projeto, desenvolvemos um plano de experimentação para comparar o desempenho de dois modelos de regressão amplamente utilizados: **Random Forest Regressor** e **XGBoost Regressor**. 
 
